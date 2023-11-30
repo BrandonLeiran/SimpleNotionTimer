@@ -68,6 +68,7 @@ window.onload = function () {
             // Reset the timer
             seconds = originalSeconds;
             updateDisplay(seconds);
+
 	    document.body.style.backgroundColor = ''; // reset to default
 	    document.body.style.color = ''; // reset to default
         } else if (isTimerRunning) {
