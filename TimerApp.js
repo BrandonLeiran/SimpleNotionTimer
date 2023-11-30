@@ -3,7 +3,21 @@ window.onload = function () {
     let seconds = parseInt(urlParams.get('duration')) || 0;
     let timerDisplay = document.getElementById('timer');
     let interval;
-    
+
+    function showNotification() {
+        if (!("Notification" in window)) {
+            alert("This browser does not support desktop notification");
+        } else if (Notification.permission === "granted") {
+            new Notification("Countdown Finished!");
+        } else if (Notification.permission !== "denied") {
+            Notification.requestPermission().then(function (permission) {
+                if (permission === "granted") {
+                    new Notification("Countdown Finished!");
+                }
+            });
+        }
+    }
+
     function updateDisplay(seconds) {
         let hours = Math.floor(seconds / 3600);
         let minutes = Math.floor((seconds % 3600) / 60);
@@ -15,7 +29,10 @@ window.onload = function () {
         interval = setInterval(function() {
             seconds--;
             updateDisplay(seconds);
-            if (seconds <= 0) clearInterval(interval);
+            if (seconds <= 0) {
+                clearInterval(interval);
+                showNotification();
+            }
         }, 1000);
     }
 
