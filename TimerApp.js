@@ -11,11 +11,19 @@ window.onload = function () {
     function adjustFontSize() {
         let viewportWidth = window.innerWidth;
         let viewportHeight = window.innerHeight;
-        let fontSize = Math.min(viewportWidth, viewportHeight) / 2; // Adjust this divisor to control text size
-
+     
+        // Aggressively adjust the font size to fill the viewable area
+        // These factors (0.8 for width and 0.3 for height) can be adjusted as needed
+        let fontSizeBasedOnWidth = viewportWidth * 0.9;
+        let fontSizeBasedOnHeight = viewportHeight * 0.9;
+     
+        // Use the smaller of the two sizes to ensure the text fits both width and height
+        let fontSize = Math.min(fontSizeBasedOnWidth, fontSizeBasedOnHeight);
+     
         timerDisplay.style.fontSize = `${fontSize}px`;
         timerDisplay.style.lineHeight = `${viewportHeight}px`; // Centers vertically
-    }
+    }   
+
 
     if (match) {
         let value = parseInt(match[1]);
