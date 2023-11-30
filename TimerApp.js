@@ -28,7 +28,17 @@ window.onload = function () {
     let timerDisplay = document.getElementById('timer');
 
     function showNotification() {
-        alert("Timer expired");
+        if (!("Notification" in window)) {
+            alert("This browser does not support desktop notification");
+        } else if (Notification.permission === "granted") {
+            new Notification("Countdown Finished!");
+        } else if (Notification.permission !== "denied") {
+            Notification.requestPermission().then(function (permission) {
+                if (permission === "granted") {
+                    new Notification("Countdown Finished!");
+                }
+            });
+        }
     }
 
     function updateDisplay(seconds) {
@@ -61,3 +71,25 @@ window.onload = function () {
             isTimerRunning = true;
         }
     }
+
+    function startTimer() {
+        interval = setInterval(function () {
+            seconds--;
+            updateDisplay(seconds);
+            if (seconds <= 0) {
+                clearInterval(interval);
+                isTimerRunning = false;
+                showNotification();
+                timerDisplay.style.backgroundColor = 'black';
+                timerDisplay.style.color = 'white';
+            }
+        }, 1000);
+    }
+
+    updateDisplay(seconds);
+
+    // Event listener for the whole document
+    document.addEventListener('click', function () {
+        toggleTimer();
+    });
+};
