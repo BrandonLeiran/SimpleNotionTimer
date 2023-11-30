@@ -61,14 +61,17 @@ window.onload = function () {
     function updateDisplay(seconds) {
         let displayText;
         if (seconds < 60) {
-            // For less than 60 seconds, display seconds with "s" label
-            displayText = `${seconds}s`;
+	    if (originalSeconds === seconds || seconds <= 10 || seconds % 5 === 0) {
+		// For less than 60 seconds, display seconds with "s" label
+		displayText = `${seconds}s`;
+		timerDisplay.textContent = displayText;
+	    }
         } else {
             // For 60 seconds or more, display minutes with "m" label
             let minutes = Math.floor(seconds / 60);
             displayText = `${minutes}m`;
+            timerDisplay.textContent = displayText;
         }
-        timerDisplay.textContent = displayText;
     }
 
     function toggleTimer() {
