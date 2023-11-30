@@ -19,11 +19,17 @@ window.onload = function () {
     }
 
     function updateDisplay(seconds) {
-        let hours = Math.floor(seconds / 3600);
-        let minutes = Math.floor((seconds % 3600) / 60);
-        let secondsLeft = seconds % 60;
-        timerDisplay.textContent = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${secondsLeft.toString().padStart(2, '0')}`;
-    }
+       let displayText;
+       if (seconds < 60) {
+           // For less than 60 seconds, display seconds with "s" label
+           displayText = `${seconds}s`;
+       } else {
+           // For 60 seconds or more, display minutes with "m" label
+           let minutes = Math.floor(seconds / 60);
+           displayText = `${minutes}m`;
+       }
+       timerDisplay.textContent = displayText;
+    }    
 
     function startTimer() {
         interval = setInterval(function() {
