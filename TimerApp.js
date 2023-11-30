@@ -6,6 +6,16 @@ window.onload = function () {
     let isTimerRunning = false;
     let interval;
     let originalSeconds = 0; // to store the original duration for reset
+    let timerDisplay = document.getElementById('timer');
+
+    function adjustFontSize() {
+        let viewportWidth = window.innerWidth;
+        let viewportHeight = window.innerHeight;
+        let fontSize = Math.min(viewportWidth, viewportHeight) / 2; // Adjust this divisor to control text size
+
+        timerDisplay.style.fontSize = `${fontSize}px`;
+        timerDisplay.style.lineHeight = `${viewportHeight}px`; // Centers vertically
+    }
 
     if (match) {
         let value = parseInt(match[1]);
@@ -25,7 +35,6 @@ window.onload = function () {
     }
 
     originalSeconds = seconds; // store the original duration
-    let timerDisplay = document.getElementById('timer');
 
     function showNotification() {
         if (!("Notification" in window)) {
@@ -59,8 +68,8 @@ window.onload = function () {
             // Reset the timer
             seconds = originalSeconds;
             updateDisplay(seconds);
-            timerDisplay.style.backgroundColor = ''; // reset styles
-            timerDisplay.style.color = '';
+	    document.body.style.backgroundColor = 'black'; // reset to default
+	    document.body.style.color = 'white'; // reset to default
         } else if (isTimerRunning) {
             // Pause the timer
             clearInterval(interval);
@@ -80,13 +89,18 @@ window.onload = function () {
                 clearInterval(interval);
                 isTimerRunning = false;
                 showNotification();
-                timerDisplay.style.backgroundColor = 'black';
-                timerDisplay.style.color = 'white';
+		document.body.style.backgroundColor = 'black'; // reset to default
+		document.body.style.color = 'white'; // reset to default
             }
         }, 1000);
     }
 
     updateDisplay(seconds);
+    adjustFontSize(); // Initial adjustment
+
+
+    window.addEventListener('resize', adjustFontSize);
+
 
     // Event listener for the whole document
     document.addEventListener('click', function () {
